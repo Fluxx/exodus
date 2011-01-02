@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: exodus
+Version: 0.1dev
+Summary: Dead simple, language agnostic migrations framework written in python.
+Home-page: UNKNOWN
+Author: Jeff Pollard
+Author-email: jeff.pollard@gmail.com
+License: UNKNOWN
+Description: Dead simple, language agnostic migrations framework written in python.
+Platform: UNKNOWN
