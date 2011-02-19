@@ -1,2 +1,2 @@
 test:
-	nosetests -s --verbose tests --with-color
+	nosetests -s
