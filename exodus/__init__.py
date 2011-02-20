@@ -32,12 +32,12 @@ class Runner(object):
 
   def __init__(self, adptr, migrations_folder=os.getcwd()):
     if not adptr in adapter.Base.__subclasses__():
-      raise ValueError("Adapter not supported")
+      raise ValueError("Adapter %s not supported" % str(adptr))
       
     self.adapter = adptr()
     
     if not os.path.isdir(migrations_folder):
-      raise ValueError("Migrations folder does not exist")
+      raise ValueError("Migrations folder %s does not exist" % migrations_folder)
   
     self.migrations_folder = migrations_folder
     self.load_migrations()
