@@ -37,7 +37,7 @@ class TestRunner(unittest.TestCase):
         
   # TODO Available runner method
   # 
-  # Assert migration is properly formed with a timestamp, down and up files.
-  # run_migration - migrations that have been run
+  # setup - creates the schema_migrations tracking table
+  # applied_migrations - migrations that have been run
   # pending_migrations - migrations that have yet to run
   # current_version - current version of migrations run

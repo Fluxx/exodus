@@ -10,4 +10,5 @@ class TestAdapter(unittest.TestCase):
   # 
   # 1. run(migration, direction=up) - runs a migration direction (up/down)
   # 2. set_version(version) - sets the migration version to a certain timestamp
-  # 2. applied_migrations - chronologically sorted list of applied migations
+  # 3. applied_migrations - chronologically sorted list of applied migations
+  # 4. setup - creates schema_migrations table in data store
