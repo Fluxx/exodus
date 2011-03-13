@@ -1,2 +1,2 @@
 test:
-	nosetests -s
+	nosetests -s --rednose
