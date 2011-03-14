@@ -42,8 +42,8 @@ class TestMySQLAdapter(unittest.TestCase):
 
   
   # Adapter methods
-  # 
-  # 1. run(migration, direction=up) - runs a migration direction (up/down)
-  # 2. set_version(version) - sets the migration version to a certain timestamp
-  # 3. applied_migrations - chronologically sorted list of applied migations
-  # 4. setup - creates schema_migrations table in data store
+  # 1. load_file(file) - loads a file via the command
+  # 2. add_migration(version) - adds a migration as being run
+  # 3. remove_migration(version) - removes a migration as being run
+  # 4. applied_migrations - chronologically sorted list of applied migations
+  # 5. setup - creates schema_migrations table in data store
