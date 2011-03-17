@@ -18,10 +18,14 @@ class TestAdapter(unittest.TestCase):
     cmd = lambda: exodus.adapter.Base('test').remove_migration(1234567890)
     self.assertRaises(NotImplementedError, cmd)
 
-    def test_base_adapterapplied_migrations_raises_exception(self):
-      cmd = lambda: exodus.adapter.Base('test').applied_migrations
-      self.assertRaises(NotImplementedError, cmd)
+  def test_base_adapterapplied_migrations_raises_exception(self):
+    cmd = lambda: exodus.adapter.Base('test').applied_migrations
+    self.assertRaises(NotImplementedError, cmd)
 
+  def test_base_adapterapplied_migrations_raises_exception(self):
+    cmd = lambda: exodus.adapter.Base('test').setup()
+    self.assertRaises(NotImplementedError, cmd)
+    
 
 # TODO: Add a helper to verify commands are between "mysql" and "database"
 class TestMySQLAdapter(unittest.TestCase):
@@ -74,6 +78,10 @@ class TestMySQLAdapter(unittest.TestCase):
   def test_applied_migrations_cuts_out_the_applied_migration(self):
     cmd = exodus.adapter.MySQL('test').applied_migrations()
     self.assertRegexpMatches(cmd, "| cut -d ' ' -f 2")
+    
+  def test_setup_creates_schema_migrations_table_with_version_column(self):
+    cmd = exodus.adapter.MySQL('test').setup()
+    self.assertRegexpMatches(cmd, "CREATE TABLE schema_migrations\(version int NOT NULL\)")
   
   # Adapter methods
   # 5. setup - creates schema_migrations table in data store

@@ -42,3 +42,7 @@ class MySQL(Base):
   def applied_migrations(self):
     """Returns the command to get the newline separated list of applied migrations"""
     return "%s | grep version | cut -d ' ' -f 2" % self.command
+    
+  def setup(self):
+    """Returns the command to setup the migrations schema table"""
+    return self.command + " --command=CREATE TABLE schema_migrations(version int NOT NULL)"
