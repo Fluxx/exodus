@@ -30,11 +30,12 @@ class InvalidMigrationError(Exception):
 class Runner(object):
   """Analyzes migration status and runs the migrations"""
 
-  def __init__(self, adptr, migrations_folder=os.getcwd()):
+  def __init__(self, adptr, database, migrations_folder=os.getcwd(), options={}):
     if not adptr in adapter.Base.__subclasses__():
       raise ValueError("Adapter %s not supported" % str(adptr))
-      
-    self.adapter = adptr()
+    
+    # Pass the database string and options dictionary to the specified adapter
+    self.adapter = adptr(database, options)
     
     if not os.path.isdir(migrations_folder):
       raise ValueError("Migrations folder %s does not exist" % migrations_folder)
