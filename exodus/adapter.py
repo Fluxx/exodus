@@ -7,11 +7,7 @@ class Base(object):
   def __init__(self, database, options={}):
     """Returns a string of the command to run given the dictionary of __init__"""
     raise NotImplementedError( "Adapters must implement their own version of __init__()" )
-    
-  def command(self):
-    """The base command to run for the given adapter"""
-    raise NotImplementedError( "Adapters must implement their own version of command()" )
-    
+        
 class MySQL(Base):
   """MySQL migration runner adapter"""
   
@@ -34,3 +30,11 @@ class MySQL(Base):
   def load_file(self, filename):
     """Returns the command load a file in to MySQL"""
     return self.command + " < %s" % filename
+    
+  def add_migration(self, version):
+    """Returns the command to add a migration to MySQL"""
+    return self.command + " --command='INSERT INTO schema_migrations VALUES(%s)'" % version
+    
+  def remove_migration(self, version):
+    """Returns the command to add a migration to MySQL"""
+    return self.command + " --command='DELETE FROM schema_migrations WHERE version = %s'" % version

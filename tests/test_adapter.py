@@ -9,6 +9,14 @@ class TestAdapter(unittest.TestCase):
   def test_base_adapter_load_file_raises_exception(self):
     cmd = lambda: exodus.adapter.Base('test').load_file('upsql')
     self.assertRaises(NotImplementedError, cmd)
+    
+  def test_base_adapter_add_migration_raises_exception(self):
+    cmd = lambda: exodus.adapter.Base('test').add_migration(1234567890)
+    self.assertRaises(NotImplementedError, cmd)
+  
+  def test_base_adapter_remove_migration_raises_exception(self):
+    cmd = lambda: exodus.adapter.Base('test').remove_migration(1234567890)
+    self.assertRaises(NotImplementedError, cmd)
 
 # TODO: Add a helper to verify commands are between "mysql" and "database"
 class TestMySQLAdapter(unittest.TestCase):
@@ -46,10 +54,15 @@ class TestMySQLAdapter(unittest.TestCase):
     cmd = exodus.adapter.MySQL('test').load_file("up.sql")
     self.assertRegexpMatches(cmd, "< up.sql$")
     
+  def test_add_migration_executes_an_insert(self):
+    cmd = exodus.adapter.MySQL('test').add_migration(1234567890)
+    self.assertRegexpMatches(cmd, "--command='INSERT INTO schema_migrations VALUES\(1234567890\)'$")
+  
+  def test_remove_migration_executes_an_insert(self):
+    cmd = exodus.adapter.MySQL('test').remove_migration(1234567890)
+    self.assertRegexpMatches(cmd, "--command='DELETE FROM schema_migrations WHERE version = 1234567890'$")
 
   
   # Adapter methods
-  # 2. add_migration(version) - adds a migration as being run
-  # 3. remove_migration(version) - removes a migration as being run
   # 4. applied_migrations - chronologically sorted list of applied migations
   # 5. setup - creates schema_migrations table in data store
