@@ -38,3 +38,7 @@ class MySQL(Base):
   def remove_migration(self, version):
     """Returns the command to add a migration to MySQL"""
     return self.command + " --command='DELETE FROM schema_migrations WHERE version = %s'" % version
+    
+  def applied_migrations(self):
+    """Returns the command to get the newline separated list of applied migrations"""
+    return "%s | grep version | cut -d ' ' -f 2" % self.command
