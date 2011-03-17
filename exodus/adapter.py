@@ -30,3 +30,7 @@ class MySQL(Base):
       self.command = "mysql" + " ".join(cmds) + " " + database
     except KeyError as ke:
       raise InvalidAdapterOption("Option '%s' not valid" % ke)
+      
+  def load_file(self, filename):
+    """Returns the command load a file in to MySQL"""
+    return self.command + " < %s" % filename
