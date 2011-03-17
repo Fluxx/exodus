@@ -29,20 +29,26 @@ class MySQL(Base):
       
   def load_file(self, filename):
     """Returns the command load a file in to MySQL"""
-    return self.command + " < %s" % filename
+    return self.__run(" < %s") % filename
     
   def add_migration(self, version):
     """Returns the command to add a migration to MySQL"""
-    return self.command + " --command='INSERT INTO schema_migrations VALUES(%s)'" % version
+    return self.__run_sql("INSERT INTO schema_migrations VALUES(%s)") % version
     
   def remove_migration(self, version):
     """Returns the command to add a migration to MySQL"""
-    return self.command + " --command='DELETE FROM schema_migrations WHERE version = %s'" % version
+    return self.__run_sql("DELETE FROM schema_migrations WHERE version = %s") % version
     
   def applied_migrations(self):
     """Returns the command to get the newline separated list of applied migrations"""
-    return "%s | grep version | cut -d ' ' -f 2" % self.command
+    return self.__run("| grep version | cut -d ' ' -f 2")
     
   def setup(self):
     """Returns the command to setup the migrations schema table"""
-    return self.command + " --command=CREATE TABLE schema_migrations(version int NOT NULL)"
+    return self.__run_sql("CREATE TABLE schema_migrations(version int NOT NULL)")
+    
+  def __run(self, command):
+    return self.command + " " + command
+    
+  def __run_sql(self, command):
+    return self.__run("--command='%s'") % command

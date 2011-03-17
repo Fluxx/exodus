@@ -82,6 +82,3 @@ class TestMySQLAdapter(unittest.TestCase):
   def test_setup_creates_schema_migrations_table_with_version_column(self):
     cmd = exodus.adapter.MySQL('test').setup()
     self.assertRegexpMatches(cmd, "CREATE TABLE schema_migrations\(version int NOT NULL\)")
-  
-  # Adapter methods
-  # 5. setup - creates schema_migrations table in data store
