@@ -1,8 +1,17 @@
 import unittest
 import exodus
 import platform
+
 from collections import deque
 
+class DummyAdapter(exodus.adapter.Base):
+  
+  def __init__(self, database, options={}):
+    pass
+    
+  def setup(self):
+    raise NotImplementedError("setup")
+          
 class TestRunner(unittest.TestCase):
 
   def test_raises_exception_without_constructor(self):
@@ -13,7 +22,7 @@ class TestRunner(unittest.TestCase):
     
   def test_raises_exception_if_migrations_folder_is_not_found(self):
     runner = lambda: exodus.Runner(exodus.adapter.MySQL, 'test', migrations_folder="/gooblygook")
-    self.assertRaises(ValueError, runner)  
+    self.assertRaises(ValueError, runner)
     
   def test_sets_adapter_with_new_instance_of_argument(self):
     runner = exodus.Runner(exodus.adapter.MySQL, 'test', migrations_folder="./tests/migrations/valid")
@@ -34,7 +43,10 @@ class TestRunner(unittest.TestCase):
     self.assertEqual(runner.migrations[1].name, '1298095980_add_cakes_table')
     self.assertEqual(runner.migrations[2].name, '1298095999_add_frostings_table')
     
-        
+  def test_setup_calls_adapters_setup_method(self):
+    runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").setup()
+    self.assertRaisesRegexp(NotImplementedError, 'setup', runner)
+    
   # TODO Available runner method
   # 
   # setup - creates the schema_migrations tracking table

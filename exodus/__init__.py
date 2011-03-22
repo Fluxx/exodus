@@ -1,6 +1,8 @@
 import adapter
 import os
 import re
+import subprocess
+
 from collections import deque
 
 class Migration(object):
@@ -48,3 +50,6 @@ class Runner(object):
     migration_folders = os.listdir(self.migrations_folder)
     self.migrations = [ Migration(os.path.join(self.migrations_folder, folder)) 
       for folder in migration_folders ]
+      
+  def setup(self):
+    subprocess.check_call(self.adapter.setup())
