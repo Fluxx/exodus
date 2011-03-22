@@ -60,8 +60,6 @@ class TestRunner(unittest.TestCase):
         
   # TODO Available runner method
   # 
-  # setup - creates the schema_migrations tracking table
-  # run(migration, direction=up) - runs a migration direction (up/down)
   # applied_migrations - migrations that have been run
   # pending_migrations - migrations that have yet to run
   # current_version - current version of migrations run

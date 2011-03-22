@@ -54,7 +54,7 @@ class Runner(object):
       
   def setup(self):
     """Sets up the migration tracking table"""
-    subprocess.check_call(self.adapter.setup())
+    subprocess.check_output(self.adapter.setup())
     
   def run(self, migration, direction="up"):
     """Runs a specified migration"""
@@ -62,5 +62,5 @@ class Runner(object):
     if not int(migration) in [ migration.version for migration in self.migrations]:
       raise InvalidMigrationError("Migration %s not found" % migration)
     
-    self.adapter.load_file("migration%s.sql" % direction)
+    subprocess.check_output(self.adapter.load_file("migration%s.sql" % direction))
     
