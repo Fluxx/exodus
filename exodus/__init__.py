@@ -62,5 +62,12 @@ class Runner(object):
     if not int(migration) in [ migration.version for migration in self.migrations]:
       raise InvalidMigrationError("Migration %s not found" % migration)
     
-    subprocess.check_output(self.adapter.load_file("migration%s.sql" % direction))
+    return subprocess.check_output(self.adapter.load_file("migration%s.sql" % direction))
     
+  def applied_migrations(self):
+    """Returns the applied migrations"""
+    return subprocess.check_output(self.adapter.applied_migrations())
+    
+  def pending_migrations(self):
+    """Returns the migrations which are still pending"""
+    applied_migrations = self.applied_migrations()

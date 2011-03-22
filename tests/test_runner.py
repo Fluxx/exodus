@@ -14,7 +14,10 @@ class DummyAdapter(exodus.adapter.Base):
     
   def load_file(self, file):
     raise NotImplementedError("load_file")
-      
+    
+  def applied_migrations(self):
+    raise NotImplementedError("applied_migrations")
+        
 class TestRunner(unittest.TestCase):
 
   def test_raises_exception_without_constructor(self):
@@ -57,6 +60,19 @@ class TestRunner(unittest.TestCase):
   def test_run_with_bad_migration_raises_exception(self):
     runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").run('9876')
     self.assertRaises(exodus.InvalidMigrationError, runner)
+    
+  def test_applied_migrations_calls_adapters_applied_migrations_method(self):
+    runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").applied_migrations()
+    self.assertRaisesRegexp(NotImplementedError, 'applied_migrations', runner)
+  
+  def test_pending_migrations_calls_adapters_applied_migrations_method(self):
+    runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").pending_migrations()
+    self.assertRaisesRegexp(NotImplementedError, 'applied_migrations', runner)
+    
+  # def test_pending_migrations_returns_list_of_yet_applied_migrations(self):
+  #   runner = exodus.Runner(DummyAdatperWithAppliedMigration, 'test', migrations_folder="./tests/migrations/valid")
+  #   runner.pending_migrations()
+  #   self.assertTrue(1 == 2)
         
   # TODO Available runner method
   # 
