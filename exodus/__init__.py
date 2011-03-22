@@ -13,6 +13,7 @@ class Migration(object):
     self.name = os.path.basename(folder)
     
     self.validate()
+    self.version = int(self.name.partition('_')[0])
         
   def validate(self):
     """Is the migration valid or not"""
@@ -52,4 +53,12 @@ class Runner(object):
       for folder in migration_folders ]
       
   def setup(self):
+    """Sets up the migration tracking table"""
     subprocess.check_call(self.adapter.setup())
+    
+  def run(self, migration, direction="up"):
+    """Runs a specified migration"""
+    # if not migration in [ migration.id for migration in self.migrations]
+    
+    self.adapter.load_file("migration%s.sql" % direction)
+    

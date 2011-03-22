@@ -11,7 +11,10 @@ class DummyAdapter(exodus.adapter.Base):
     
   def setup(self):
     raise NotImplementedError("setup")
-          
+    
+  def load_file(self, file):
+    raise NotImplementedError("load_file")
+      
 class TestRunner(unittest.TestCase):
 
   def test_raises_exception_without_constructor(self):
@@ -47,6 +50,14 @@ class TestRunner(unittest.TestCase):
     runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").setup()
     self.assertRaisesRegexp(NotImplementedError, 'setup', runner)
     
+  def test_run_calls_adapters_load_file_method(self):
+    runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").run('1298095972')
+    self.assertRaisesRegexp(NotImplementedError, 'load_file', runner)
+    
+  def test_run_with_bad_migration_raises_exception(self):
+    runner = lambda: exodus.Runner(DummyAdapter, 'test', migrations_folder="./tests/migrations/valid").run('9876')
+    self.assertRaises(exodus.InvalidMigrationError, runner)
+        
   # TODO Available runner method
   # 
   # setup - creates the schema_migrations tracking table

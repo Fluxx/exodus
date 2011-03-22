@@ -14,3 +14,7 @@ class TestMigration(unittest.TestCase):
 
   def test_raises_exception_with_migration_missing_up_file(self):
     self.assertRaises(exodus.InvalidMigrationError, (lambda: exodus.Migration('./tests/migrations/missing_up/1298095999_add_color_column')))
+    
+  def test_version_returns_only_version_part_of_filename(self):
+    migration = exodus.Migration('./tests/migrations/valid/1298095972_add_pies_table')
+    self.assertEqual(migration.version, 1298095972)
