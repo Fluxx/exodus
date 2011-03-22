@@ -58,7 +58,9 @@ class Runner(object):
     
   def run(self, migration, direction="up"):
     """Runs a specified migration"""
-    # if not migration in [ migration.id for migration in self.migrations]
+    
+    if not int(migration) in [ migration.version for migration in self.migrations]:
+      raise InvalidMigrationError("Migration %s not found" % migration)
     
     self.adapter.load_file("migration%s.sql" % direction)
     
